@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Transaction Dashboard Charts</title>
+<style type="text/css">
+	#chart-container {
+		width: 640px;
+		height: auto;
+	}
+
+</style>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="includes/js/chartjs/Chart.js"></script>
+<script type="text/javascript" src="includes/js/chartjs/Chart.min.js"></script>
+</head>
+<body>
+	
+<div id="chart-container">
+	<!--  <canvas id="pie-chart" width="100" height="100"></canvas>  -->
+	
+	 <canvas id="bar-chart-grouped" ></canvas>
+	
+</div>
+
+ 
+
+<!-- 
+
+<script type="text/javascript" src="includes/js/chartjs/chart_pie.js"></script> 
+
+ -->
+<script>
+new Chart(document.getElementById("bar-chart-grouped"), {
+    type: 'bar',
+    data: {
+      labels: ["Pending", "Released"],
+      datasets: [
+        {
+          label: "> 95% Shipped By Status",
+          backgroundColor: "#3e95cd",
+          data: [133,221]
+        }  
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Transaction Dashboard'
+      }
+    }
+});
+</script>
+
+
+
+</body>
+</html>
