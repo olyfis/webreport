@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Olympus FIS Web Report Menu</title>
+<title>Olympus FIS Infolease Contract Validation Application</title>
 <!--  <link href="includes/appstyle.css" rel="stylesheet" type="text/css" /> 
 
 <style><%@include file="includes/css/reports.css"%></style>
@@ -53,9 +53,12 @@ function ajaxFunction(){
 
 //	var atype = document.actionform.getElementById('actiontype').value;
 	var atype = document.actionform.actiontype.value;
+	var date2 = document.actionform.startDate.value;
 	//alert("atype=" + atype);
-	//var queryString = "?atype=" + atype + "&wpm=" + wpm + "&sex=" + sex;
-	var queryString = "/webreport/ajax.jsp?atype=" + atype;
+	
+	//alert("date2=" + date2);
+	//var queryString = "?atype=" + atype + "&wpm=" + wpm + "&ex=" + ex;
+	var queryString = "/webreport/ajaxIL.jsp?atype=" + atype + "&date2=" + date2;
 	
 
 	  
@@ -68,9 +71,9 @@ function ajaxFunction(){
  
 </script>
 
-
-
-
+<!-- 
+http://localhost:8181/webreport/valboth?startDate=2021-02-05&actiontype=15&id=101-0018009-002
+ -->
 
 <!-- ********************************************************************************************************************************************************* -->
 
@@ -93,14 +96,12 @@ function ajaxFunction(){
 
 
 <div style="padding-left:20px">
-  <h3>FIS Report Landing Page</h3>
+  <h3>Olympus FIS Infolease Contract Validation Application</h3>
 </div>
 
 <BR>
 
-<h5>This page will provide access to useful FIS reports and data.<br>
-Please select an action from the menu and provide the required
-parameters if necessary.</h5>
+<h5>This page will provide functionality to validate certain contract fields.</h5>
 
 
 
@@ -112,67 +113,52 @@ to refresh the menus.
 <BR>
 
 
-	<form name="actionform" method="post" action="results.jsp">
+	<form name="actionform" method="get" action="valboth">
+
+<BR>
+
 
 <table class="a" width="40%"  border="1" cellpadding="1" cellspacing="1">
-  <tr> <th class="theader"> Olympus FIS Web Reports</th> </tr>
+<tr> <th class="theader"> Olympus FIS Infolease Contract Validation</th> </tr>
   <tr>
     <td class="table_cell">
     <!--  Inner Table -->
     <table class="a" width="100%"  border="1" cellpadding="1" cellspacing="1">
+    <!--  
   <tr>
-        <td width="40" valign="bottom">
-        <b>Action:</b> 
+  <td width="20" valign="bottom"> <b>Select Date:</b> </td> 
+  <td width="20" valign="bottom">  
+     <%  out.println("<input name=\"startDate\" id=\"date2\" type=\"text\" value=\"Click for Calendar\" onclick=\"pureJSCalendar.open('yyyy-MM-dd', 20, 30, 7, '2017-1-1', '2025-12-31', 'date2', 20)\"   />" );
+     %>
+  </td>
+  </tr>
+  -->
+   <tr>
+  <td width="20" valign="bottom"> <b>Action:</b> </td> 
+  <td width="20" valign="bottom">  
+      
         <select name="actiontype" onchange='ajaxFunction()' >
           <option value="0">Select Action</option>
-          <option value="130">FIS Sales Support Data</option>
-          <option value="100">FIS Contract Validation</option>
-          <option value="125">FIS Contract Error Report</option>
-          <option value="250">FIS Sales Support Validation</option>
-           <option value="135">FIS Asset Validation</option>
-		   <option value="240">FIS NBVA App Menu</option>
-		   
-            <option value="210">FIS Orders Released</option>
-           <option value="140">FIS Rapport Sync Error Check</option>
-	
-           <option value="10">EverGreen Report</option>
-            <option value="115">FIS Contract EOT Report</option>
-            <option value="145">FIS Lease Rents Accrued Report</option>
-			<option value="170">FIS Active Contracts Report</option>
-			<option value="175">FIS Contracts Database Report</option>
-			<option value="180">FIS Daily Commencement Report</option>
-			<option value="300">FIS Asset Master Upload</option>
-			<option value="310">FIS Lease Master Upload</option>
-			<!--<option value="150">NBVA Asset Report</option> -->
-		    <option value="160">FIS VA PO Expiration Report</option>
-		<option value="38">Rapport Booking with CPO Report</option>
- 
-           <option value="60">Last Ship Date Report</option>
-         <option value="70">CCAN Info Report</option>
-        <option value="80">Snapshot Report</option>
-         <option value="85">Utilization Report</option>
-		 		  <!-- <option value="99">FIS Live Penetration Reports</option> -->
-          <!-- <option value="5">FIS Flash Report</option> -->
-           
+		  <option value="15">Retrieve Contract IDs</option>
+       
         </select>
-	</td>
-
-    <td  valign="bottom" class="c">
+   
+  </td>
+  </tr>
+  <tr>
+   <td  valign="bottom" class="a">
 	<div id='ajaxDiv'> </div>
 	</td>
-    <td> 
-    <INPUT type="submit" value="Run">  
+	 <td> 
+    <INPUT type="submit" value="Validate">  
     </td>
-    
-   </tr></table>
-    
-    
-    </td>
+	
   </tr>
+  </table>
+
 </table>
 
-
  </form>
-<h5>If you require access to the reports, please contact: John.Freeh@olympus.com</h5>
+ 
 </body>
 </html>

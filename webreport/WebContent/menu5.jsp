@@ -125,7 +125,7 @@ to refresh the menus.
         <b>Action:</b> 
         <select name="actiontype" onchange='ajaxFunction()' >
           <option value="0">Select Action</option>
-          <option value="130">FIS Sales Support Data</option>
+          
           <option value="100">FIS Contract Validation</option>
           <option value="125">FIS Contract Error Report</option>
           <option value="250">FIS Sales Support Validation</option>
