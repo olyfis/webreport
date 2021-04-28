@@ -38,6 +38,8 @@ import com.olympus.olyutil.Olyutil;
 import com.olympus.webreport.ValidateChecks;
 import com.olympus.webreport.ValidateChecksBundle;
 import com.olympus.webreport.ValidateContractChecks2;
+// **** NOTE: Check ValidateContractAsset.java
+
 
 // RUN:  http://localhost:8181/webreport/validatecontract?startDate=2019-07-31&actiontype=15&id=101-0014323-006
 @WebServlet("/validatecontract")
@@ -451,6 +453,9 @@ public class AssetContractCheck extends HttpServlet {
 				}
 				rtnArr.clear();
 				rtnArr = ValidateChecksBundle.getDataStrArr(conn, sqlFile3, booked);
+				
+				System.out.println("*** !!! *** PurchOpt arrSZ=" + rtnArr.size() + "--");
+				
 				if (rtnArr.size() > 0) {
 					errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr);
 					// Olyutil.printStrArray(rtnArr);

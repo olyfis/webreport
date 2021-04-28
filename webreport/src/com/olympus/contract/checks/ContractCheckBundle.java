@@ -114,7 +114,7 @@ public class ContractCheckBundle {
 		errArr.clear();
 
 		for (String str : strArr) { // iterating ArrayList
-			// System.out.println("**** Str=" + str);
+			System.out.println("**** Str=" + str);
 			String[] items = str.split(":");
 			id = items[0];
 			asset = items[1];

@@ -11,7 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -90,32 +92,84 @@ public class ValidateChecksBundle {
 		}
 		return err;
 	}
+	
 	/****************************************************************************************************************************************************/
-	public static ArrayList<String> purchOptChk(ArrayList<String> strArr) throws IOException, SQLException {
+	public static void printMap(Map mp) {
+	    Iterator it = mp.entrySet().iterator();
+	    int sz = mp.size();
+	    
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        System.out.println("*** Map Size= " + sz + " -- " + pair.getKey() + " = " + pair.getValue());
+	        
+	    }
+	}
+	/****************************************************************************************************************************************************/
+	// Add code to check $1.00 buyout
+	
+	
+	public static ArrayList<String> purchOptChk(ArrayList<String> strArr, HashMap<String, String> modelMap) throws IOException, SQLException {
 
 		ArrayList<String> errArr = new ArrayList<String>();
 		String id = null;
 		String asset = null;
 		String po1 = null;
+		String poCode = null;
+		String del = null;
 		String poDB = null;
+		String poContractDesc = null;
+		String poAssetDesc = null;
+		String model = null;
 		String err = null;
 		errArr.clear();
-
+		String dollarBuyout = "$1.00 Buyout";
+		
+		//printMap(modelMap);
 		for (String str : strArr) { // iterating ArrayList
-			// System.out.println("**** Str=" + str);
+			 //System.out.println("**** Str=" + str);
 			String[] items = str.split(":");
 			id = items[0];
 			asset = items[1];
 			po1 = items[2];
 			poDB = items[3];
+			poCode = items[4];
+			poContractDesc = items[5];
+			poAssetDesc = items[6];
+			model = items[7];
+			//System.out.println("*^^ PCD=" + poContractDesc + "-- PAD=" + poAssetDesc + "-- Model=" + model + "--");
 			// Fix code 20 -- 2021-02-05
-			//System.out.println("*^^ValChkBndl^^*** PO1=" + po1 + "-- poDB=" + poDB + "--");
+			 //System.out.println("*^^ValChkBndl^^*** ContractPurchOpt=" + po1 + "-- ContractPurchOptIL=" + poDB + "--");
+			
+			// Check Asset
+			if (modelMap.containsKey(model)) {
+				if (poAssetDesc.equals(dollarBuyout)) {
+					err = "AssetID: "+  asset + " is a consumable or soft asset, please code as $1.00 BuyOut.";
+					errArr.add(err);
+				}
+				//System.out.println("***^^*** Model=" + model + "--PCD=" + poContractDesc + "-- PAD=" + poAssetDesc +   "--");
+			}
+			
+			// Check Contract
+			
+			if (poContractDesc.equals(dollarBuyout)) {
+				if (poCode.equals("01") || poCode.equals("11") || poCode.equals("16") || poCode.equals("20")) {
+					
+				} else {
+					err = "Contract contains assets with $1.00 BuyOut Purchase option, please correct contract purchase option.";
+					errArr.add(err);
+				}
+					
+					
+					
+			}
+			
+			
 			if(poDB.equals("20")) {
 				continue;
 			}
 			if (!po1.equals(poDB)) {
-				System.out.println("**** PO1=" + po1 + "-- poDB=" + poDB + "--");
-				err = "Error: Purchase Option Check  -- ID: " + id + "Asset: " + asset + "  PO: " + po1 + " poDB: "
+				//System.out.println("**** ContractPurchOpt=" + po1 + "-- ContractPurchOptIL=" + poDB + "--");
+				err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  ContractPurchOpt: " + po1 + " ContractPurchOptIL: "
 						+ poDB;
 				errArr.add(err);
 			}
