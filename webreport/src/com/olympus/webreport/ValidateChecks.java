@@ -134,7 +134,7 @@ public static List<AssetValData> loadData(ArrayList<String> strArr ) throws IOEx
 		
 		String id = contract.getContractID();
 		String idPrefix = id.substring(0, 3);
-		System.out.println("*** contractID:" + contract.getContractID() + " prefix:" + idPrefix);
+		//System.out.println("*** contractID:" + contract.getContractID() + " prefix:" + idPrefix);
 		
 		double tolerance = 0.75;
 		/*

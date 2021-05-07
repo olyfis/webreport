@@ -183,8 +183,16 @@ public class ValidateChecksBundle {
 			}
 			if (!assetPO.equals(contractPO)) {
 				//System.out.println("**** ContractPurchOpt=" + po1 + "-- ContractPurchOptIL=" + poDB + "--");
-				err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  AssetPurchOpt: " + assetPO + " ContractPurchOptIL: "
-						+ contractPO;
+				
+				if (contractPO.equals("14")) {
+					err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  AssetPurchOpt: " + assetPO + " ContractPurchOptIL: "
+							+ contractPO + " -- Code as: \" 20 -> Mixed Purchase Opt w/ cap\"";
+				} else {
+					err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  AssetPurchOpt: " + assetPO + " ContractPurchOptIL: "
+							+ contractPO;
+				}
+				
+				
 				errArr.add(err);
 			}
 		}
