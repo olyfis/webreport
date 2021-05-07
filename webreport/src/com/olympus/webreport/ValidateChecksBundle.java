@@ -24,7 +24,8 @@ public class ValidateChecksBundle {
 	static String propFile = "C:\\Java_Dev\\props\\unidata.prop";
 	static String sqlFile1 = "C:\\Java_Dev\\props\\sql\\RateCheck.sql";
 	static String sqlFile2 = "C:\\Java_Dev\\props\\sql\\FinalRateCheck.sql";
-	static String sqlFile3 = "C:\\Java_Dev\\props\\sql\\purchOptionMatch.sql";
+	static String sqlFile3 = "C:\\Java_Dev\\props\\sql\\purchOptionMatch_V2.sql";
+	static String sqlFile3_BD = "C:\\Java_Dev\\props\\sql\\purchOptionMatchBookingDate_V1.sql";
 	static String sqlFile4 = "C:\\Java_Dev\\props\\sql\\upfrontTaxCheck.sql";
 	static String sqlFile5 = "C:\\Java_Dev\\props\\sql\\miscBillableFlagErrCheck.sql";
 	static String sqlFile7 = "C:\\Java_Dev\\props\\sql\\PremiumProtection.sql";
@@ -108,15 +109,15 @@ public class ValidateChecksBundle {
 	// Add code to check $1.00 buyout
 	
 	
-	public static ArrayList<String> purchOptChk(ArrayList<String> strArr, HashMap<String, String> modelMap) throws IOException, SQLException {
+	public static ArrayList<String> purchOptChk(ArrayList<String> strArr, HashMap<String, String> modelMap, String idVal) throws IOException, SQLException {
 
 		ArrayList<String> errArr = new ArrayList<String>();
 		String id = null;
 		String asset = null;
-		String po1 = null;
+		String assetPO = null; // asset PurchaseOpt
 		String poCode = null;
 		String del = null;
-		String poDB = null;
+		String contractPO = null;
 		String poContractDesc = null;
 		String poAssetDesc = null;
 		String model = null;
@@ -126,51 +127,64 @@ public class ValidateChecksBundle {
 		
 		//printMap(modelMap);
 		for (String str : strArr) { // iterating ArrayList
-			 //System.out.println("**** Str=" + str);
+			//System.out.println("**** Str=" + str);
 			String[] items = str.split(":");
 			id = items[0];
 			asset = items[1];
-			po1 = items[2];
-			poDB = items[3];
+			assetPO = items[2];
+			contractPO = items[3];
 			poCode = items[4];
 			poContractDesc = items[5];
 			poAssetDesc = items[6];
 			model = items[7];
 			//System.out.println("*^^ PCD=" + poContractDesc + "-- PAD=" + poAssetDesc + "-- Model=" + model + "--");
 			// Fix code 20 -- 2021-02-05
-			 //System.out.println("*^^ValChkBndl^^*** ContractPurchOpt=" + po1 + "-- ContractPurchOptIL=" + poDB + "--");
+			//System.out.println("*^^ValChkBndl^^*** ID="  + id + "--  ContractPurchOpt=" + po1 + "-- ContractPurchOptIL=" + poDB + "--");
 			
+			if (! idVal.equals(id)) {
+				continue;
+			}
+			
+			/*------------------------------------------------------------------------------------------------------------------------------------*/
 			// Check Asset
 			if (modelMap.containsKey(model)) {
-				if (poAssetDesc.equals(dollarBuyout)) {
+				if (! poAssetDesc.equals(dollarBuyout)) {
 					err = "AssetID: "+  asset + " is a consumable or soft asset, please code as $1.00 BuyOut.";
 					errArr.add(err);
+					// Contract check -- mixed or $1.00 buyout
+					if (poContractDesc.equals(dollarBuyout)) { // check contract
+						if (poCode.equals("01") || poCode.equals("11") || poCode.equals("16") || poCode.equals("20")) {
+							
+						} else {
+							err = "AssetCheck: Contract contains assets with $1.00 BuyOut Purchase option, please correct contract purchase option.";
+							errArr.add(err);
+						}		
+					}		
 				}
 				//System.out.println("***^^*** Model=" + model + "--PCD=" + poContractDesc + "-- PAD=" + poAssetDesc +   "--");
 			}
-			
-			// Check Contract
-			
-			if (poContractDesc.equals(dollarBuyout)) {
+			/*------------------------------------------------------------------------------------------------------------------------------------*/
+
+			// Check Contract vs. Asset
+			if (poAssetDesc.equals(dollarBuyout) ) {
 				if (poCode.equals("01") || poCode.equals("11") || poCode.equals("16") || poCode.equals("20")) {
 					
 				} else {
 					err = "Contract contains assets with $1.00 BuyOut Purchase option, please correct contract purchase option.";
 					errArr.add(err);
-				}
-					
-					
-					
+				}		
 			}
 			
-			
-			if(poDB.equals("20")) {
+		
+			/*------------------------------------------------------------------------------------------------------------------------------------*/
+
+			if(contractPO.equals("20") || contractPO.equals("11") || contractPO.equals("16") ) {
 				continue;
 			}
-			if (!po1.equals(poDB)) {
+			if (!assetPO.equals(contractPO)) {
 				//System.out.println("**** ContractPurchOpt=" + po1 + "-- ContractPurchOptIL=" + poDB + "--");
-				err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  ContractPurchOpt: " + po1 + " ContractPurchOptIL: "
-						+ poDB;
+				err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  AssetPurchOpt: " + assetPO + " ContractPurchOptIL: "
+						+ contractPO;
 				errArr.add(err);
 			}
 		}

@@ -1,8 +1,6 @@
 package com.olympus.contract.validation;
 
 
-
-
 	import java.io.BufferedReader;
 	import java.io.File;
 	import java.io.FileInputStream;
@@ -19,7 +17,8 @@ package com.olympus.contract.validation;
 	import java.text.SimpleDateFormat;
 	import java.util.ArrayList;
 	import java.util.Calendar;
-	import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Hashtable;
 	import java.util.List;
 	import java.util.Map;
 	import java.util.Properties;
@@ -40,7 +39,8 @@ package com.olympus.contract.validation;
 	import com.olympus.olyutil.Olyutil;
 	import com.olympus.webreport.ValidateChecks;
 	import com.olympus.webreport.ValidateChecksBundle;
-	import com.olympus.webreport.ValidateContractChecks2;
+import com.olympus.webreport.ValidateContractAsset;
+import com.olympus.webreport.ValidateContractChecks2;
 
 	// RUN:  http://localhost:8181/webreport/validatecontract?startDate=2019-07-31&actiontype=15&id=101-0014323-006
 	@WebServlet("/validaterangeasset")
@@ -48,7 +48,7 @@ package com.olympus.contract.validation;
 
 		static String sqlFile1 = "C:\\Java_Dev\\props\\sql\\RateCheck.sql";
 		static String sqlFile2 = "C:\\Java_Dev\\props\\sql\\FinalRateCheck.sql";
-		static String sqlFile3 = "C:\\Java_Dev\\props\\sql\\purchOptionMatch.sql";
+		static String sqlFile3 = "C:\\Java_Dev\\props\\sql\\purchOptionMatch_V2.sql";
 		static String sqlFile4 = "C:\\Java_Dev\\props\\sql\\upfrontTaxCheck.sql";
 		static String sqlFile5 = "C:\\Java_Dev\\props\\sql\\miscBillableFlagErrCheck.sql";
 		static String sqlFile6 = "C:\\Java_Dev\\props\\sql\\taxRateChanges.sql";
@@ -63,6 +63,7 @@ package com.olympus.contract.validation;
 
 		static String sqlFileContract = "C:\\Java_Dev\\props\\sql\\contractvalidate.sql";
 		static String sqlFileAsset = "C:\\Java_Dev\\props\\sql\\assetValByContract.sql";
+		static String modelDataFile = "C:\\Java_Dev\\props\\ContractValidation\\modelData.csv";
 		// static String sqlFileAsset = "C:\\Java_Dev\\props\\sql\\q1.sql";
 
 		/****************************************************************************************************************************************************/
@@ -292,6 +293,12 @@ package com.olympus.contract.validation;
 			Map<String, Boolean> contractErrs = null;
 			;
 			String booked = "";
+			
+			
+			HashMap<String, String> modelMap = new HashMap<String, String>();
+			ArrayList<String> modelArr = new ArrayList<String>();
+			modelArr = Olyutil.readInputFile(modelDataFile);
+			modelMap = ValidateContractAsset.buildModelMap(modelArr);
 			 
 			List<ContractData> contracts;
 			System.out.println("*** runChecks() -> ID:" + idVal + "-- BookDate:" + bookDate + "--");
@@ -345,7 +352,7 @@ package com.olympus.contract.validation;
 					rtnArr.clear();
 					rtnArr = ValidateChecksBundle.getDataStrArr(conn, sqlFile3, booked);
 					if (rtnArr.size() > 0) {
-						errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr);
+						errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr, modelMap, idVal);
 						// Olyutil.printStrArray(rtnArr);
 					}
 					rtnArr.clear();
@@ -406,11 +413,17 @@ package com.olympus.contract.validation;
 		}
 		
 		
+		
+		
 		/****************************************************************************************************************************************************/
 
 		@Override
 		protected void doGet(HttpServletRequest request, HttpServletResponse response)
 				throws ServletException, IOException {
+			HashMap<String, String> modelMap = new HashMap<String, String>();
+			ArrayList<String> modelArr = new ArrayList<String>();
+			modelArr = Olyutil.readInputFile(modelDataFile);
+			modelMap = ValidateContractAsset.buildModelMap(modelArr);
 			String idVal = "";
 			ArrayList<String> strArr = new ArrayList<String>();
 			ArrayList<String> rtnArr3 = new ArrayList<String>();
@@ -451,6 +464,7 @@ package com.olympus.contract.validation;
 			// Contract:" + contracts.get(0).getContractID() );
 			request.getSession().setAttribute("strArr", strArr);
 			request.getSession().setAttribute("contracts", contracts);
+			request.getSession().setAttribute("modelMap", modelMap);
 
 			if (contracts.size() > 0) {
 				booked = contracts.get(0).getDateBooked();
@@ -493,7 +507,7 @@ package com.olympus.contract.validation;
 					rtnArr.clear();
 					rtnArr = ValidateChecksBundle.getDataStrArr(conn, sqlFile3, booked);
 					if (rtnArr.size() > 0) {
-						errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr);
+						errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr, modelMap, idVal);
 						// Olyutil.printStrArray(rtnArr);
 					}
 					rtnArr.clear();

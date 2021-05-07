@@ -134,7 +134,7 @@ public static List<AssetValData> loadData(ArrayList<String> strArr ) throws IOEx
 		
 		String id = contract.getContractID();
 		String idPrefix = id.substring(0, 3);
-		//System.out.println("*** contractID:" + contract.getContractID() + " prefix:" + idPrefix);
+		System.out.println("*** contractID:" + contract.getContractID() + " prefix:" + idPrefix);
 		
 		double tolerance = 0.75;
 		/*
@@ -360,15 +360,15 @@ public static List<AssetValData> loadData(ArrayList<String> strArr ) throws IOEx
 			nullYield = true;
 		}
 		
-		//System.out.println("y14=" + y14 +"--");
+		//System.out.println("****** y14=" + y14 +"--");
 		if (! isNullStr(y14) ) {
-			y14d = Double.parseDouble(y14);
+			y14d = Double.parseDouble(y14.replace("%", ""));
 		} else {
 			nullYield = true;
 		}
 		if (contract.getLeaseType().equals("TL") ) {
 			if (screen14ResidualValue != residual) {
-				System.out.println("Error in Screen 3 Residual:  Should all be the same as Scree14 Residual.");
+				//System.out.println("Error in Screen 3 Residual:  Should all be the same as Scree14 Residual.");
 				contractErrs.put("Screen 14 Residual", true);
 				contractErrs.put("Screen 3 Residual", true);
 				

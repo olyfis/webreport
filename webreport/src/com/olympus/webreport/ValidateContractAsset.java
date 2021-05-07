@@ -401,7 +401,7 @@ public class ValidateContractAsset extends HttpServlet {
 								//System.out.println("*** ValidateContractsAsset: purchOptCheck rtnArrSZ=" + rtnArr.size() + "--");
 								
 								if (rtnArr.size() > 0) {
-									errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr, modelMap);
+									errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr, modelMap, idVal);
 									// Olyutil.printStrArray(rtnArr);	 
 								}
 								rtnArr.clear();

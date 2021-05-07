@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import com.olympus.infolease.contract.ContractData;
 import com.olympus.olyutil.Olyutil;
 import com.olympus.webreport.ValidateChecks;
 import com.olympus.webreport.ValidateChecksBundle;
+import com.olympus.webreport.ValidateContractAsset;
 import com.olympus.webreport.ValidateContractChecks2;
 // **** NOTE: Check ValidateContractAsset.java
 
@@ -47,7 +49,7 @@ public class AssetContractCheck extends HttpServlet {
 
 	static String sqlFile1 = "C:\\Java_Dev\\props\\sql\\RateCheck.sql";
 	static String sqlFile2 = "C:\\Java_Dev\\props\\sql\\FinalRateCheck.sql";
-	static String sqlFile3 = "C:\\Java_Dev\\props\\sql\\purchOptionMatch.sql";
+	static String sqlFile3 = "C:\\Java_Dev\\props\\sql\\purchOptionMatch_V2.sql";
 	static String sqlFile4 = "C:\\Java_Dev\\props\\sql\\upfrontTaxCheck.sql";
 	static String sqlFile5 = "C:\\Java_Dev\\props\\sql\\miscBillableFlagErrCheck.sql";
 	static String sqlFile6 = "C:\\Java_Dev\\props\\sql\\taxRateChanges.sql";
@@ -62,6 +64,7 @@ public class AssetContractCheck extends HttpServlet {
 
 	static String sqlFileContract = "C:\\Java_Dev\\props\\sql\\contractvalidate.sql";
 	static String sqlFileAsset = "C:\\Java_Dev\\props\\sql\\assetValByContract.sql";
+	static String modelDataFile = "C:\\Java_Dev\\props\\ContractValidation\\modelData.csv";
 	// static String sqlFileAsset = "C:\\Java_Dev\\props\\sql\\q1.sql";
 
 	/****************************************************************************************************************************************************/
@@ -253,6 +256,11 @@ public class AssetContractCheck extends HttpServlet {
 		Map<String, Boolean> contractErrs = null;
 		;
 		String booked = "";
+		
+		HashMap<String, String> modelMap = new HashMap<String, String>();
+		ArrayList<String> modelArr = new ArrayList<String>();
+		modelArr = Olyutil.readInputFile(modelDataFile);
+		modelMap = ValidateContractAsset.buildModelMap(modelArr);
 		 
 		List<ContractData> contracts;
 		System.out.println("*** runChecks() -> ID:" + idVal + "-- BookDate:" + bookDate + "--");
@@ -306,7 +314,7 @@ public class AssetContractCheck extends HttpServlet {
 				rtnArr.clear();
 				rtnArr = ValidateChecksBundle.getDataStrArr(conn, sqlFile3, booked);
 				if (rtnArr.size() > 0) {
-					errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr);
+					errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr, modelMap, idVal);
 					// Olyutil.printStrArray(rtnArr);
 				}
 				rtnArr.clear();
@@ -372,6 +380,11 @@ public class AssetContractCheck extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HashMap<String, String> modelMap = new HashMap<String, String>();
+		ArrayList<String> modelArr = new ArrayList<String>();
+		modelArr = Olyutil.readInputFile(modelDataFile);
+		modelMap = ValidateContractAsset.buildModelMap(modelArr);
+		
 		String idVal = "";
 		ArrayList<String> strArr = new ArrayList<String>();
 		ArrayList<String> rtnArr3 = new ArrayList<String>();
@@ -457,7 +470,7 @@ public class AssetContractCheck extends HttpServlet {
 				System.out.println("*** !!! *** PurchOpt arrSZ=" + rtnArr.size() + "--");
 				
 				if (rtnArr.size() > 0) {
-					errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr);
+					errorArr2 = ValidateChecksBundle.purchOptChk(rtnArr, modelMap, idVal);
 					// Olyutil.printStrArray(rtnArr);
 				}
 				rtnArr.clear();
