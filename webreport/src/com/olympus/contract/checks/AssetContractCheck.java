@@ -53,6 +53,8 @@ public class AssetContractCheck extends HttpServlet {
 	static String sqlFile4 = "C:\\Java_Dev\\props\\sql\\upfrontTaxCheck.sql";
 	static String sqlFile5 = "C:\\Java_Dev\\props\\sql\\miscBillableFlagErrCheck.sql";
 	static String sqlFile6 = "C:\\Java_Dev\\props\\sql\\taxRateChanges.sql";
+	static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\NBVAbuy\\BO-EUA_Check.sql";
+
 	// Service method of servlet
 	static Statement stmt = null;
 	static Connection con = null;
@@ -337,6 +339,20 @@ public class AssetContractCheck extends HttpServlet {
 				}
 				rtnArr.clear();
 
+				rtnArr = ValidateChecksBundle.getDataStrArr(conn, sqlFile8, idVal);
+				
+				System.out.println("*** sqlFile8 rtnARR SZ:" + rtnArr.size());
+				
+				if (rtnArr.size() > 0) {
+					errorRtn = ValidateChecksBundle.descResidualChk(rtnArr);
+					if (! Olyutil.isNullStr(errorRtn)) {
+						errorArr1.add(errorRtn);
+					}
+					  //Olyutil.printStrArray(rtnArr);
+				}
+				rtnArr.clear();
+				
+				
 			} catch (IOException | SQLException e) {
 				e.printStackTrace();
 			}

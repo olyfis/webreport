@@ -45,7 +45,7 @@ public class ValidateContractChecks2 {
 
 	
 	public static ArrayList<String> getDbData(Connection conn, String sqlFile, String query, String param1 ) throws IOException, SQLException  {
-	
+		//System.out.println("***^^^*** In ValidateContractsChecks2: getDbData");
 		//Connection conn = null;
 		FileReader fr = null;
 		String s = new String();
@@ -54,7 +54,7 @@ public class ValidateContractChecks2 {
         //Statement statement = null;
          PreparedStatement statement;
 		ResultSet res  = null;
-		
+		//System.out.println("Q=" + query);
 		//conn = getDbConn(propFile);
 		if (conn != null) {
 			//System.out.println("Connected to the database");

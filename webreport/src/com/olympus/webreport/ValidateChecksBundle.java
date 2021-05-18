@@ -29,6 +29,7 @@ public class ValidateChecksBundle {
 	static String sqlFile4 = "C:\\Java_Dev\\props\\sql\\upfrontTaxCheck.sql";
 	static String sqlFile5 = "C:\\Java_Dev\\props\\sql\\miscBillableFlagErrCheck.sql";
 	static String sqlFile7 = "C:\\Java_Dev\\props\\sql\\PremiumProtection.sql";
+	static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\NBVAbuy\\BO-EUA_Check.sql";
 	// static String sqlFile6 = "C:\\Java_Dev\\props\\sql\\taxRateChanges.sql";
 	
 
@@ -37,9 +38,11 @@ public class ValidateChecksBundle {
 			throws IOException, SQLException {
 		ArrayList<String> strArr = new ArrayList<String>();
 		String query = null;
+		 //System.out.println("**** SQLFile=" +  sqlFileName    + "-- PARAM=" + bookDate + "-- Q=" + query);
+
 		query = ValidateContractChecks2.getQuery(sqlFileName);
 		strArr = ValidateContractChecks2.getDbData(conn, sqlFileName, query, bookDate);
-		//System.out.println("**** Q=" + query);
+		 //System.out.println("**** PARAM=" + bookDate + "-- Q=" + query);
 
 		return strArr;
 	}
@@ -268,6 +271,28 @@ public class ValidateChecksBundle {
 
 				// System.out.println("***^^^**** Bill Flag == 0");
 				err = "Error: Billable Flag Check issue! -- ID: " + id + " Bill Flag: " + billFlag;
+			}
+		}
+		return err;
+	}
+	
+	
+	/****************************************************************************************************************************************************/
+	public static String descResidualChk(ArrayList<String> strArr) throws IOException, SQLException {
+		//System.out.println("***^^^**** running descResidualChk");
+		String id = null;
+		String billFlag = null;
+		String err = null;
+
+		for (String str : strArr) { // iterating ArrayList
+			  //System.out.println("**** Str=" + str);
+			String[] items = str.split(":");
+			id = items[0];
+			 
+			if (! Olyutil.isNullStr(id)) {
+
+				// System.out.println("***^^^**** Bill Flag == 0");
+				err = "Error: Residual > 0 for 'B/O' or 'EUA' -- ID: " + id;
 			}
 		}
 		return err;
