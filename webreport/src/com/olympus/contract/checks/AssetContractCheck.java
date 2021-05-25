@@ -53,7 +53,7 @@ public class AssetContractCheck extends HttpServlet {
 	static String sqlFile4 = "C:\\Java_Dev\\props\\sql\\upfrontTaxCheck.sql";
 	static String sqlFile5 = "C:\\Java_Dev\\props\\sql\\miscBillableFlagErrCheck.sql";
 	static String sqlFile6 = "C:\\Java_Dev\\props\\sql\\taxRateChanges.sql";
-	static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\NBVAbuy\\BO-EUA_Check.sql";
+	static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\BO-EUA_Check.sql";
 
 	// Service method of servlet
 	static Statement stmt = null;

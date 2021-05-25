@@ -74,7 +74,7 @@ public class ValidateContractAsset extends HttpServlet {
 		static String sqlFile7 = "C:\\Java_Dev\\props\\sql\\PremiumProtection.sql";
 		
 		// Added new check 2021-05-18 -- JB
-		static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\NBVAbuy\\BO-EUA_Check.sql";
+		static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\BO-EUA_Check.sql";
 
 		
 		

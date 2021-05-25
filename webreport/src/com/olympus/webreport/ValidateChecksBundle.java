@@ -29,7 +29,7 @@ public class ValidateChecksBundle {
 	static String sqlFile4 = "C:\\Java_Dev\\props\\sql\\upfrontTaxCheck.sql";
 	static String sqlFile5 = "C:\\Java_Dev\\props\\sql\\miscBillableFlagErrCheck.sql";
 	static String sqlFile7 = "C:\\Java_Dev\\props\\sql\\PremiumProtection.sql";
-	static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\NBVAbuy\\BO-EUA_Check.sql";
+	static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\BO-EUA_Check.sql";
 	// static String sqlFile6 = "C:\\Java_Dev\\props\\sql\\taxRateChanges.sql";
 	
 
@@ -136,7 +136,7 @@ public class ValidateChecksBundle {
 			asset = items[1];
 			assetPO = items[2];
 			contractPO = items[3];
-			poCode = items[4];
+			poCode = items[4]; // purOptCode
 			poContractDesc = items[5];
 			poAssetDesc = items[6];
 			model = items[7];
@@ -155,14 +155,20 @@ public class ValidateChecksBundle {
 					err = "AssetID: "+  asset + " is a consumable or soft asset, please code as $1.00 BuyOut.";
 					errArr.add(err);
 					// Contract check -- mixed or $1.00 buyout
-					if (poContractDesc.equals(dollarBuyout)) { // check contract
+					
+					
+					
+					//if (poContractDesc.equals(dollarBuyout)) { // check contract
+						
+						
+						
 						if (poCode.equals("01") || poCode.equals("11") || poCode.equals("16") || poCode.equals("20")) {
 							
 						} else {
-							err = "AssetCheck: Contract contains assets with $1.00 BuyOut Purchase option, please correct contract purchase option.";
+							err = "ContractCheck: Contract contains assets with $1.00 BuyOut Purchase option, please use Mixed Purchase option.";
 							errArr.add(err);
 						}		
-					}		
+					//}		
 				}
 				//System.out.println("***^^*** Model=" + model + "--PCD=" + poContractDesc + "-- PAD=" + poAssetDesc +   "--");
 			}
@@ -191,8 +197,15 @@ public class ValidateChecksBundle {
 					err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  AssetPurchOpt: " + assetPO + " ContractPurchOptIL: "
 							+ contractPO + " -- Code as: \" 20 -> Mixed Purchase Opt w/ cap\"";
 				} else {
-					err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  AssetPurchOpt: " + assetPO + " ContractPurchOptIL: "
-							+ contractPO;
+					
+					if (contractPO.equals("08")) {
+						err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  AssetPurchOpt: " + assetPO + " ContractPurchOptIL: "
+								+ contractPO + " -- Code as: \" 16 -> Mixed Purchase Opt \"";	
+					} else {
+	
+					 err = "Error: Purchase Option Check  -- ID: " + id + " -- Asset: " + asset + "  AssetPurchOpt: " + assetPO + " ContractPurchOptIL: "
+							 + contractPO;
+					}
 				}
 				
 				
