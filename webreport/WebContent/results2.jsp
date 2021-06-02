@@ -221,15 +221,7 @@
 			//String id = request.getParameter("id");		 
 			String redirectURL = "http://" + hostname  + ":8181/rest/ssbook"  ;
 			response.sendRedirect(redirectURL);
-		} else if (at.equals("320")   ) {
-			//String id = request.getParameter("id");		 
-			String redirectURL = "http://" + hostname  + ":8181/reports/techupgradeassets"  ;
-			response.sendRedirect(redirectURL);
-		}
-		
-		
-		
-		
+		} 
 		
 		
 		
