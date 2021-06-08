@@ -225,10 +225,6 @@
 			//String id = request.getParameter("id");		 
 			String redirectURL = "http://" + hostname  + ":8181/reports/techupgradeassets"  ;
 			response.sendRedirect(redirectURL);
-		} else if (at.equals("330")   ) {
-			//String id = request.getParameter("id");		 
-			String redirectURL = "http://" + hostname  + ":8181/reports/bfq180"  ;
-			response.sendRedirect(redirectURL);
 		}
 		
 		
