@@ -76,7 +76,9 @@ public class ValidateContractAsset extends HttpServlet {
 		// Added new check 2021-05-18 -- JB
 		static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\BO-EUA_Check.sql";
 
-		
+		// Added new check 2021-06-10 -- JB
+		static String sqlFile9 = "C:\\Java_Dev\\props\\sql\\PPT_PassThru.sql";
+
 		
 		// Service method of servlet
 					static Statement stmt = null;
@@ -441,7 +443,8 @@ public class ValidateContractAsset extends HttpServlet {
 									 //Olyutil.printStrArray(rtnArr);	 
 								}
 								rtnArr.clear();
-								
+								/***************************************************************************************************************/
+
 								 // Added new check 2021-05-18 -- Residual check -- JB
 								
 								//System.out.println("*** Begin running sqlFile8 --  idVal="  + idVal + "--");
@@ -457,7 +460,24 @@ public class ValidateContractAsset extends HttpServlet {
 									  //Olyutil.printStrArray(rtnArr);
 								}
 								rtnArr.clear();
+								/***************************************************************************************************************/
+								// Added new check 2021-06-10 --  check -- JB
 								
+								//System.out.println("*** Begin running sqlFile8 --  idVal="  + idVal + "--");
+								rtnArr = ValidateChecksBundle.getDataStrArr(conn, sqlFile9, idVal);
+								
+								//System.out.println("*** sqlFile9 rtnARR SZ:" + rtnArr.size());
+								if (rtnArr.size() > 0) {
+									errorRtn = ValidateChecksBundle.pptPassThruChk(rtnArr);
+									if (! Olyutil.isNullStr(errorRtn)) {
+										errorArr1.add(errorRtn);
+									}
+									  //Olyutil.printStrArray(rtnArr);
+								}
+								
+								rtnArr.clear();
+								/***************************************************************************************************************/
+
 								
 								
 								 

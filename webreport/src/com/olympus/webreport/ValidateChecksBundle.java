@@ -30,6 +30,8 @@ public class ValidateChecksBundle {
 	static String sqlFile5 = "C:\\Java_Dev\\props\\sql\\miscBillableFlagErrCheck.sql";
 	static String sqlFile7 = "C:\\Java_Dev\\props\\sql\\PremiumProtection.sql";
 	static String sqlFile8 = "C:\\Java_Dev\\props\\sql\\BO-EUA_Check.sql";
+	static String sqlFile9 = "C:\\Java_Dev\\props\\sql\\PPT_PassThru.sql";
+
 	// static String sqlFile6 = "C:\\Java_Dev\\props\\sql\\taxRateChanges.sql";
 	
 
@@ -42,7 +44,7 @@ public class ValidateChecksBundle {
 
 		query = ValidateContractChecks2.getQuery(sqlFileName);
 		strArr = ValidateContractChecks2.getDbData(conn, sqlFileName, query, bookDate);
-		 //System.out.println("**** PARAM=" + bookDate + "-- Q=" + query);
+		 //System.out.println("**** SQL_File=" +  sqlFileName    +  "-- PARAM=" + bookDate + "-- Q=" + query);
 
 		return strArr;
 	}
@@ -308,6 +310,29 @@ public class ValidateChecksBundle {
 				err = "Error: Residual > 0 for 'B/O' or 'EUA' -- ID: " + id;
 			}
 		}
+		return err;
+	}
+	
+	/****************************************************************************************************************************************************/
+	public static String pptPassThruChk(ArrayList<String> strArr) throws IOException, SQLException {
+		//System.out.println("***^^^**** running descResidualChk");
+		String err = null;
+		String id = null;
+		String incInRent = null;
+		
+		for (String str : strArr) { // iterating ArrayList
+			 //System.out.println("**** Str=" + str);
+			String[] items = str.split(":");
+			id = items[0];
+			incInRent = items[4];
+			if ((! Olyutil.isNullStr(incInRent)) && (! incInRent.equals("1"))) {
+
+				// System.out.println("***^^^**** Bill Flag == 0");
+				err = "Error: PPT Pass Through -> Inc_In_Rent not equal 0 -- ID: " + id;
+			}
+		}
+		
+		
 		return err;
 	}
 	

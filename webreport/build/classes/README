@@ -1,6 +1,9 @@
 README 
 
 To update checks use files:
+AssetContractCheck.java
+
+
 
 ValidateContractAsset.java
 ValidateChecksBundle.java
